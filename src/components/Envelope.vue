@@ -812,7 +812,6 @@ export default {
 			this.setSelected(false)
 			// Delete
 			this.$emit('delete', this.data.databaseId)
-			console.log('deleting', this.data, this.layoutMessageViewThreaded)
 
 			try {
 				if (this.layoutMessageViewThreaded) {
