@@ -261,7 +261,8 @@ class AttachmentService implements IAttachmentService {
 
 	public function getAttachmentNames(Account $account, Mailbox $mailbox, Message $message, \Horde_Imap_Client_Socket $client): array {
 		$attachments = [];
-		$cached = $this->cache->get($message->getUid());
+		$uniqueCacheId = $account->getUserId() . $account->getId() . $mailbox->getId() . $message->getUid();
+		$cached = $this->cache->get($uniqueCacheId);
 		if ($cached) {
 			return $cached;
 		}
@@ -278,9 +279,9 @@ class AttachmentService implements IAttachmentService {
 			$this->logger->error('Could not get attachment names', ['exception' => $e, 'messageId' => $message->getUid()]);
 		}
 		$result = array_map(static function (array $attachment) {
-			return $attachment['fileName'];
+			return ['name' => $attachment['fileName'],'mime' => $attachment['mime']];
 		}, $attachments);
-		$this->cache->set($message->getUid(), $result);
+		$this->cache->set($uniqueCacheId, $result);
 		return $result;
 	}
 
