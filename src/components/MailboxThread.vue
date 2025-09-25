@@ -338,7 +338,7 @@ export default {
 		clearTimeout(this.startMailboxTimer)
 	},
 	methods: {
-		groupEnvelopesByDate(envelopes, syncTimestamp, sortOrder = 'newest') {
+		groupEnvelopesByDate(envelopes, syncTimestamp) {
 			const now = new Date(syncTimestamp)
 
 			const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000)
@@ -376,11 +376,11 @@ export default {
 					groups.lastMonth.push(envelope)
 				} else if (date.getFullYear() === now.getFullYear()) {
 					const m = date.getMonth()
-					monthsMap[m] = monthsMap[m] || []
+					monthsMap[m] ??= []
 					monthsMap[m].push(envelope)
 				} else {
 					const y = date.getFullYear()
-					yearsMap[y] = yearsMap[y] || []
+					yearsMap[y] ??= []
 					yearsMap[y].push(envelope)
 				}
 			}
@@ -395,7 +395,7 @@ export default {
 			const groupOrder = []
 
 			const fixedGroups = ['lastHour', 'today', 'yesterday', 'lastWeek', 'lastMonth']
-			groupOrder.push(...(this.sortOrder === 'newest' ? fixedGroups : fixedGroups.reverse()))
+			groupOrder.push(...(this.sortOrder === 'newest' ? fixedGroups : fixedGroups.toReversed()))
 
 			const monthOrder = Object.keys(monthsMap).map(Number)
 			monthOrder.sort((a, b) => (this.sortOrder === 'newest' ? b - a : a - b))
