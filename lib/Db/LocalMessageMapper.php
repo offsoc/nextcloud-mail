@@ -164,11 +164,11 @@ class LocalMessageMapper extends QBMapper {
 			->where(
 				$qb->expr()->isNull('send_at'),
 				$qb->expr()->eq('type', $qb->createNamedParameter(LocalMessage::TYPE_DRAFT, IQueryBuilder::PARAM_INT), IQueryBuilder::PARAM_INT),
-				$qb->expr()->lte('updated_at', $qb->createNamedParameter($time - 300, IQueryBuilder::PARAM_INT), IQueryBuilder::PARAM_INT),
+				/*$qb->expr()->lte('updated_at', $qb->createNamedParameter($time - 300, IQueryBuilder::PARAM_INT), IQueryBuilder::PARAM_INT),
 				$qb->expr()->orX(
 					$qb->expr()->isNull('failed'),
 					$qb->expr()->eq('failed', $qb->createNamedParameter(false, IQueryBuilder::PARAM_BOOL), IQueryBuilder::PARAM_BOOL),
-				)
+				)*/
 			)
 			->orderBy('updated_at', 'asc')
 			->orderBy('account_id', 'asc');
